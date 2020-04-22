@@ -1,11 +1,5 @@
-import networkx as nx
 import matplotlib.pyplot as plt
-from examples.drawing.plot_edge_colormap import colors
 import networkx as nx
-import pandas as pd
-
-n = 10  # 10 nodes=regions
-m = 20  # 20 edges
 
 G = nx.Graph()
 
@@ -34,17 +28,22 @@ G.add_node('Sicilia', weight='2835')
 
 G.add_edges_from([('Aosta', 'Piemonte'),
                   ('Piemonte', 'Aosta'), ('Piemonte', 'Lombardia'), ('Piemonte', 'Liguria'), ('Piemonte', 'Emilia'),
-                  ('Lombardia', 'Piemonte'), ('Lombardia', 'Emilia'), ('Lombardia', 'Trentino'), ('Lombardia', 'Veneto'),
+                  ('Lombardia', 'Piemonte'), ('Lombardia', 'Emilia'), ('Lombardia', 'Trentino'),
+                  ('Lombardia', 'Veneto'),
                   ('Liguria', 'Piemonte'), ('Liguria', 'Emilia'), ('Liguria', 'Toscana'),
                   ('Trentino', 'Lombardia'), ('Trentino', 'Veneto'), ('Trentino', 'Fvgiulia'),
                   ('Fvgiulia', 'Veneto'),
                   ('Veneto', 'Fvgiulia'), ('Veneto', 'Trentino'), ('Veneto', 'Lombardia'), ('Veneto', 'Piemonte'),
-                  ('Emilia', 'Veneto'), ('Emilia', 'Lombardia'), ('Emilia', 'Piemonte'), ('Emilia', 'Liguria'), ('Emilia', 'Toscana'), ('Emilia', 'Marche'),
-                  ('Toscana', 'Liguria'), ('Toscana', 'Emilia'), ('Toscana', 'Marche'), ('Toscana', 'Umbria'), ('Toscana', 'Lazio'),
-                  ('Marche', 'Emilia'), ('Marche', 'Toscana'), ('Marche', 'Umbria'), ('Marche', 'Abruzzo'), ('Marche', 'Lazio'),
+                  ('Emilia', 'Veneto'), ('Emilia', 'Lombardia'), ('Emilia', 'Piemonte'), ('Emilia', 'Liguria'),
+                  ('Emilia', 'Toscana'), ('Emilia', 'Marche'),
+                  ('Toscana', 'Liguria'), ('Toscana', 'Emilia'), ('Toscana', 'Marche'), ('Toscana', 'Umbria'),
+                  ('Toscana', 'Lazio'),
+                  ('Marche', 'Emilia'), ('Marche', 'Toscana'), ('Marche', 'Umbria'), ('Marche', 'Abruzzo'),
+                  ('Marche', 'Lazio'),
                   ('Umbria', 'Marche'), ('Umbria', 'Toscana'), ('Umbria', 'Lazio'),
                   ('Abruzzo', 'Marche'), ('Abruzzo', 'Lazio'), ('Abruzzo', 'Molise'),
-                  ('Lazio', 'Toscana'), ('Lazio', 'Umbria'), ('Lazio', 'Marche'), ('Lazio', 'Abruzzo'), ('Lazio', 'Molise'), ('Lazio', 'Campania'),
+                  ('Lazio', 'Toscana'), ('Lazio', 'Umbria'), ('Lazio', 'Marche'), ('Lazio', 'Abruzzo'),
+                  ('Lazio', 'Molise'), ('Lazio', 'Campania'),
                   ('Molise', 'Abruzzo'), ('Molise', 'Lazio'), ('Molise', 'Campania'), ('Molise', 'Puglia'),
                   ('Campania', 'Lazio'), ('Campania', 'Molise'), ('Campania', 'Puglia'), ('Campania', 'Basilicata'),
                   ('Basilicata', 'Campania'), ('Basilicata', 'Puglia'), ('Basilicata', 'Calabria'),
@@ -57,16 +56,32 @@ list(G.nodes)
 list(G.edges)
 # G.degree([2, 3])
 
+totalweightssum = 0
+for n in G.nodes(data='weight'):
+    totalweightssum += int(n[1])
+print('total cases = %d' % totalweightssum)
+
 # some properties
-print("node degree clustering")
+print("-node degree clustering: ")
 for v in nx.nodes(G):
     print('%s %d %f' % (v, nx.degree(G, v), nx.clustering(G, v)))
 
 # print the adjacency list
-print("print the adjacency list")
+print("-print the adjacency list: ")
 for line in nx.generate_adjlist(G):
     print(line)
 
-nx.draw(G, with_labels=True, font_weight='bold')
+
+# planar_layout = Position nodes without edge intersections.
+pos = nx.planar_layout(G)
+nx.draw(G,
+        pos,
+        with_labels=True,
+        font_weight='bold',
+        node_size=100,
+        node_color='r')
+
+plt.axis('off')
 plt.show()
-#plt.savefig("covid-19_scenario.png")
+
+# plt.savefig("covid-19_scenario.png")
