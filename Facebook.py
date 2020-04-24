@@ -1,48 +1,72 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+import collections
+
+from numpy import mean
 
 G_fb = nx.read_edgelist("facebook_combined.txt", create_using=nx.Graph(), nodetype=int)
 print(nx.info(G_fb))
-print('Density: %d' % nx.density(G_fb))
+print('Density: %f' % nx.density(G_fb))
 print('is_directed: %s' % nx.is_directed(G_fb))
-# print('Diameter (it is the maximum eccentricity): %d' % nx.diameter(G_fb))
+print('average_clustering: %f' % nx.average_clustering(G_fb))
+print('average_degree_connectivity: %s' % nx.average_degree_connectivity(G_fb))
+print('Diameter (it is the maximum eccentricity): %d' % nx.diameter(G_fb))
 
-# some properties
+# ---------------------- some properties
+# --NODE DEGREE CLUSTERING
+"""
 print("-Node degree clustering: ")
 for v in nx.nodes(G_fb):
     print('%s %d %f' % (v, nx.degree(G_fb, v), nx.clustering(G_fb, v)))
     if nx.degree(G_fb, v) == 1045:
         vtemp = v
 
-print('>>>eccolo il max degree %d' % vtemp)
+print('>>>here it is the max degree %d' % vtemp)
+"""
 
 degree_sequence = sorted([d for n, d in G_fb.degree()], reverse=True)
-# print "Degree sequence", degree_sequence
+# --NODE WITH MAX DEGREE
 dmax = max(degree_sequence)
-print(dmax)
-"""
-plt.loglog(degree_sequence, 'b-', marker='o')
-plt.title("Degree rank plot")
-plt.ylabel("degree")
-plt.xlabel("rank")
+print('>>node with max-degree: %d' % dmax)
+print('>>node 107 (that has max degree) has clustering: %f' % nx.clustering(G_fb, 107))
+# degree_sequence.remove(dmax)
+# --AVG DEGREE
+avgdegree = mean(degree_sequence)
+print('>>avg-degree: %d' % avgdegree)
 
-# draw graph in inset
-plt.axes([0.45, 0.45, 0.45, 0.45])
-Gcc = G_fb.subgraph(sorted(nx.connected_components(G_fb), key=len, reverse=True)[0])
-pos = nx.spring_layout(Gcc)
-plt.axis('off')
-nx.draw_networkx_nodes(Gcc, pos, node_size=10)
-nx.draw_networkx_edges(Gcc, pos, alpha=0.4)
+
+
+# --PLOT DEGREE HISTOGRAM
+degreeCount = collections.Counter(degree_sequence)
+deg, cnt = zip(*degreeCount.items())
+
+fig, ax = plt.subplots()
+plt.bar(deg, cnt, width=0.80, color='b')
+
+plt.title("Degree Histogram")
+plt.ylabel("Count")
+plt.xlabel("Degree")
+# deg2 = deg[1::15] in order to compute a readable graph: I take 1 elem every 15 in the list.
+ax.set_xticks([d for d in deg])
+ax.set_xticklabels(deg)
 
 plt.show()
 
 
-# print the adjacency list
+"""
+# --PRINT THE ADJACENCY LIST
 print("-Print the adjacency list: ")
 for line in nx.generate_adjlist(G_fb):
     print(line)
+"""
 
 
+# Compute the shortest-path betweenness centrality for nodes.
+# Betweenness_centrality of a node v is the sum of the fraction of all-pairs shortest paths
+# that pass through v. So the node's size it's related with the node's betweenness_centrality.
+# in practice: how many pairs of individuals would
+# have to go through you in order to reach one
+# another in the minimum number of hops?
 betCent = nx.betweenness_centrality(G_fb, normalized=True, endpoints=True)
 node_color = [20000.0 * G_fb.degree(v) for v in G_fb]
 node_size = [v * 10000 for v in betCent.values()]
@@ -55,9 +79,13 @@ nx.draw(G_fb,
         node_size=node_size)
 plt.axis('off')
 print('I have just finished the calculation phase!')
-plt.show()
-plt.savefig("G_fb.png")
-"""
-# shortest_path = dict(nx.all_pairs_shortest_path(G_fb))
+print('node with max-betweenness_centrality: %f' % max(betCent))
+closenessCent = nx.closeness_centrality(G_fb)
+print('node with max-closeness_centrality: %f' % max(closenessCent))
+print('node with min-closeness_centrality: %f' % min(closenessCent))
+clustering = nx.clustering(G_fb)
+print('node with max-clustering: %f' % max(clustering))
+print('node with min-clustering: %f' % min(clustering))
 
-# sorted(betCent, key=betCent.get, reverse=True)[:5]
+plt.show()
+
