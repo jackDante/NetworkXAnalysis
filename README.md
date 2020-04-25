@@ -16,7 +16,7 @@ This codelab covered: Social network analysis with NetworkX (https://networkx.gi
 
 Note: some functions may require time > 2minutes.
 
-Result
+Results
 ------------
 
 ![Network, screenshot](Net.png)
