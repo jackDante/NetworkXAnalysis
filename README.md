@@ -12,7 +12,7 @@ This codelab covered: Social network analysis with NetworkX (https://networkx.gi
 1. import required libraries: networkx as nx; matplotlib.pyplot as plt; collections; numpy.
 1. run Facebook.py
 1. the program will print every metrics, the Histogram about the degree distribution and the Network.
-1. Report aboout this project is inside the PDF file.
+1. Report aboout this project is inside the PDF file. (SocialNetAnalysis-NetworkAnalysis.pdf)
 
 Note: some functions may require time > 2minutes.
 Dataset 
