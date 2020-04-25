@@ -15,6 +15,13 @@ This codelab covered: Social network analysis with NetworkX (https://networkx.gi
 1. Report aboout this project is inside the PDF file.
 
 Note: some functions may require time > 2minutes.
+Dataset 
+------------
+from Stanford Large Network Dataset Collection (http://snap.stanford.edu/data/index.html)
+* Nodes	4039
+* Edges	88234
+* Diameter (longest shortest path)	8
+
 
 Results
 ------------
