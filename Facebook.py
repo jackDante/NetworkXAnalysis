@@ -1,7 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import collections
-
 from numpy import mean
 
 G_fb = nx.read_edgelist("facebook_combined.txt", create_using=nx.Graph(), nodetype=int)
