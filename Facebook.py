@@ -3,15 +3,22 @@ import matplotlib.pyplot as plt
 import collections
 from numpy import mean
 
+
+# ---------------------------------------------------------
+# -----------------------Select the graph
+# ---------------------------------------------------------
 G_fb = nx.read_edgelist("facebook_combined.txt", create_using=nx.Graph(), nodetype=int)
+# G_fb = nx.petersen_graph()  # Synthetic graphs
+
 print(nx.info(G_fb))
 print('Density: %f' % nx.density(G_fb))
 print('is_directed: %s' % nx.is_directed(G_fb))
 print('average_clustering: %f' % nx.average_clustering(G_fb))
 print('average_degree_connectivity: %s' % nx.average_degree_connectivity(G_fb))  # required time
 print('Diameter (it is the maximum eccentricity): %d' % nx.diameter(G_fb))  # required time
+# ------------------------------------------------------------------------------
 
-# -------------------------- some properties
+# -------------------------- some properties -----------------------------------
 # --NODE DEGREE CLUSTERING----------------------------------------------------
 
 print("-Node degree clustering: ")
@@ -25,6 +32,7 @@ dmax = max(degree_sequence)
 for v in nx.nodes(G_fb):
     if nx.degree(G_fb, v) > 290:
         print('node: %s degree:%d' % (v, nx.degree(G_fb, v)))
+
 # --AVG DEGREE----------------------------------------------------
 avgdegree = mean(degree_sequence)
 print('>>avg-degree: %d' % avgdegree)
