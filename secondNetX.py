@@ -2,12 +2,12 @@ import collections
 import matplotlib.pyplot as plt
 import networkx as nx
 
-#nodes
+# nodes
 n = 200
-#probability
+# probability
 p = 0.1
 
-string = "G(" +str(n)+ ", " +str(p)+ ")"
+string = "G(" + str(n) + ", " + str(p) + ")"
 G = nx.gnp_random_graph(n, p)
 
 degree_sequence = sorted([d for n, d in G.degree()], reverse=True)  # degree sequence

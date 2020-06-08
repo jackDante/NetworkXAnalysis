@@ -1,8 +1,10 @@
+import itertools
+
 import networkx as nx
 import matplotlib.pyplot as plt
 import collections
 
-from networkx.algorithms.community import greedy_modularity_communities
+from networkx.algorithms.community import greedy_modularity_communities, girvan_newman
 from numpy import mean
 
 """
@@ -22,13 +24,22 @@ print('is_directed: %s' % nx.is_directed(G_fb))
 # r = nx.degree_assortativity_coefficient(G_fb)  # Assortativity of graph by degree.
 # print("degree_assortativity_coefficient (the network is non-assortative): %f \n \n" % r)
 # It is positive so the #edges within groups exceeds the #expected on the basis of chance
-
+"""
 # ------------------------------------------Clauset-Newman-Moore greedy modularity maximization
 # Find communities in graph using Clauset-Newman-Moore greedy modularity maximization.
 list_of_communities = list(greedy_modularity_communities(G_fb))
 for community in list_of_communities:
     print(community)
     print(len(community))
+"""
+# ------------------------------------------Girvan–Newman method. Finds communities in a graph using the
+# Girvan–Newman method. The Girvan–Newman algorithm detects communities by progressively removing edges from the
+# original graph. The algorithm removes the “most valuable” edge, traditionally the edge with the highest betweenness
+# centrality, at each step
+k = 3
+comp = girvan_newman(G_fb)
+for communities in itertools.islice(comp, k):
+    print(tuple(sorted(c) for c in communities))
 
 
 # ------------------------------------------PageRank
@@ -57,11 +68,11 @@ For PageRank to converge to a unique solution (i.e., a unique stationary distrib
 the transition matrix must be irreducible. 
 In other words, it must be that there exists a path between every pair of nodes in the graph, 
 or else there is the potential of “rank sinks.”
-"""
+
 print('\n GoogleMatrix (2sec):')
 m = nx.google_matrix(G_fb)
 print(m)
-
+"""
 
 # ------------------------------------------HITS (hubs and authorities)
 """
@@ -70,7 +81,7 @@ The HITS algorithm computes two numbers for a node.
 Authorities estimates the node value based on the incoming links. 
 Hubs estimates the node value based on outgoing links.
 ---Note that: In my case of UNDIRECTED GRAPH -> Hubs=Authorities!
-"""
+
 
 print('\n HITS (20sec):')
 calculate_hits = nx.hits(G_fb)
@@ -80,7 +91,7 @@ print(hits_sorted)
 
 print("page rank")
 print(pageRank())
-
+"""
 # ------------------------------------------Betweenness
 # Compute the shortest-path betweenness centrality for nodes. And then plot the graph!!!
 """
