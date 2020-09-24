@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import collections
 from numpy import mean
 
-
 # ---------------------------------------------------------
 # -----------------------Select the graph
 # ---------------------------------------------------------
@@ -12,10 +11,22 @@ G_fb = nx.read_edgelist("facebook_combined.txt", create_using=nx.Graph(), nodety
 
 print(nx.info(G_fb))
 print('Density: %f' % nx.density(G_fb))
+
+print('Number of connected components: %f' % nx.number_connected_components(G_fb))
+# print(nx.connected_components(G_fb))
+
+A = sorted(nx.connected_components(G_fb), key=len, reverse=True)
+print(A)
+# print('Strongly connected?: %s' % nx.is_strongly_connected(G_fb))
+
+
+"""
 print('is_directed: %s' % nx.is_directed(G_fb))
 print('average_clustering: %f' % nx.average_clustering(G_fb))
 print('average_degree_connectivity: %s' % nx.average_degree_connectivity(G_fb))  # required time
 print('Diameter (it is the maximum eccentricity): %d' % nx.diameter(G_fb))  # required time
+print('average_clustering: %f' % nx.average_clustering(G_fb))
+print('assortativity: %f' % nx.degree_assortativity_coefficient(G_fb))
 # ------------------------------------------------------------------------------
 
 # -------------------------- some properties -----------------------------------
@@ -88,3 +99,4 @@ sortedclustering = {k: v for k, v in sorted(clustering.items(), key=lambda item:
 print('sorted-clustering: %s' % sortedclustering)
 
 plt.show()
+"""
